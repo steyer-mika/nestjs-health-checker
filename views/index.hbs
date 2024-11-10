@@ -30,7 +30,13 @@
           {{#each observers}}
             <tr class='border-b'>
               <td class='py-2 px-4'>{{this.label}}</td>
-              <td class='py-2 px-4'>{{this.url}}</td>
+              <td class='py-2 px-4'>
+                <a
+                  href='{{this.url}}'
+                  target='_blank'
+                  class='underline text-blue-500'
+                >{{this.url}}</a>
+              </td>
               <td class='py-2 px-4'>{{#if
                   this.isActive
                 }}Aktiv{{else}}Inaktiv{{/if}}</td>
