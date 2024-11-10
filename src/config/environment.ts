@@ -38,5 +38,19 @@ export default () => ({
       private: process.env.MAILJET_API_KEY_PRIVATE,
       public: process.env.MAILJET_API_KEY_PUBLIC,
     },
+
+    from: {
+      email: process.env.MAILJET_FROM_EMAIL,
+      name: process.env.MAILJET_FROM_NAME,
+    },
+
+    to: {
+      email: process.env.MAILJET_TO_EMAIL,
+      name: process.env.MAILJET_TO_NAME,
+    },
+
+    templates: {
+      failedHealthCheck: process.env.MAILJET_FAILED_HEALTH_TEMPLATE_ID,
+    },
   },
 });

@@ -2,14 +2,16 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { HealthCheckResult } from '@nestjs/terminus';
+import { catchError, firstValueFrom, of } from 'rxjs';
 
 import { ObserverDto } from '@/api/observer/observer.schema';
 import { ObserverService } from '@/api/observer/observer.service';
-import { catchError, firstValueFrom, of } from 'rxjs';
+import { MailService } from '@/services/mail/mail.service';
 
-type ObserverHealth = {
+export type ObserverHealth = {
   observer: ObserverDto;
   healthCheck: Readonly<HealthCheckResult> | null;
+  checkAt: Date;
 };
 
 @Injectable()
@@ -17,6 +19,7 @@ export class CheckHealthService {
   constructor(
     private readonly observerService: ObserverService,
     private readonly httpService: HttpService,
+    private readonly mailService: MailService,
   ) {}
 
   @Cron(CronExpression.EVERY_10_MINUTES)
@@ -33,8 +36,15 @@ export class CheckHealthService {
         observers.map((observer) => this.getObserverHealth(observer)),
       );
 
-      console.log(healthChecks);
-      // TODO: Handle health checks
+      const failedHealthChecks = healthChecks.filter(
+        (x) => x.healthCheck?.status !== 'ok',
+      );
+
+      await Promise.all(
+        failedHealthChecks.map((x) =>
+          this.mailService.sendFailedHealthCheckMail(x),
+        ),
+      );
     } catch (error) {
       Logger.error(error, 'CheckHealthService');
     }
@@ -53,12 +63,14 @@ export class CheckHealthService {
       return {
         observer,
         healthCheck: null,
+        checkAt: new Date(),
       };
     }
 
     return {
       observer,
       healthCheck: response.data,
+      checkAt: new Date(),
     };
   }
 }
