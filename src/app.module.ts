@@ -1,13 +1,16 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
+import { ApiModule } from '@/api/api.module';
+import { AppController } from '@/app.controller';
+import { AppService } from '@/app.service';
 import environment from '@/config/environment';
 import { LoggerMiddleware } from '@/middleware/logger.middleware';
-
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { DatabaseService } from '@/services/database/database.service';
+import { ServicesModule } from '@/services/services.module';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
   imports: [
@@ -26,12 +29,23 @@ import { AppService } from './app.service';
         },
       ],
     }),
+
+    ServicesModule,
+    ApiModule,
   ],
 
   providers: [
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe,
+    },
+    {
+      provide: DatabaseService,
+      useFactory: () => new DatabaseService(),
     },
 
     AppService,
