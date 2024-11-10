@@ -20,7 +20,7 @@ import { ObserverService } from '@/api/observer/observer.service';
  * Controller responsible for handling HTTP requests related to observers.
  * It provides endpoints for creating, retrieving, updating, and deleting observers.
  */
-@Controller('observer')
+@Controller('observers')
 export class ObserverController {
   constructor(private readonly observerService: ObserverService) {}
 

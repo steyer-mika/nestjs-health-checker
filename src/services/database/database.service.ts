@@ -82,7 +82,7 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       index: number,
       obj: DatabaseRecord<T>[],
     ) => boolean,
-    update: Omit<Partial<DatabaseRecord<T>>, 'uuid'>,
+    update: Partial<DatabaseRecord<T>>,
   ): Promise<DatabaseRecord<T> | null> {
     const index = this.data[table].findIndex(condition);
 
@@ -90,14 +90,14 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       return null;
     }
 
-    const validated = DatabaseConfig[table].parse(update);
-
     const old = this.data[table][index];
 
-    this.data[table][index] = {
+    const validated = DatabaseConfig[table].parse({
       ...old,
-      ...validated,
-    };
+      ...update,
+    });
+
+    this.data[table][index] = validated;
 
     await this.saveData();
 

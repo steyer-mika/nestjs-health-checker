@@ -24,4 +24,8 @@ export default [
       '@typescript-eslint/no-floating-promises': 'error',
     },
   },
+
+  {
+    ignorePatterns: ['views/**/*', 'public/**/*'],
+  },
 ];
