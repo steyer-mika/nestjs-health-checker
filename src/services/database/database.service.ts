@@ -15,6 +15,12 @@ import {
   DatabaseTable,
 } from '@/config/database';
 
+export type QueryCondition<T extends DatabaseTable> = (
+  item: DatabaseRecord<T>,
+  index: number,
+  obj: DatabaseRecord<T>[],
+) => boolean;
+
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnModuleDestroy {
   private filePath = join(process.cwd(), 'database', 'db.json');
@@ -55,33 +61,21 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
 
   public findOne<T extends DatabaseTable>(
     table: T,
-    condition: (
-      item: DatabaseRecord<T>,
-      index: number,
-      obj: DatabaseRecord<T>[],
-    ) => boolean,
+    condition: QueryCondition<T>,
   ): DatabaseRecord<T> | null {
     return this.data[table].find(condition) ?? null;
   }
 
   public findMany<T extends DatabaseTable>(
     table: T,
-    condition: (
-      item: DatabaseRecord<T>,
-      index: number,
-      obj: DatabaseRecord<T>[],
-    ) => boolean,
+    condition: QueryCondition<T>,
   ): DatabaseRecord<T>[] {
     return this.data[table].filter(condition);
   }
 
   public async updateOne<T extends DatabaseTable>(
     table: T,
-    condition: (
-      item: DatabaseRecord<T>,
-      index: number,
-      obj: DatabaseRecord<T>[],
-    ) => boolean,
+    condition: QueryCondition<T>,
     update: Partial<DatabaseRecord<T>>,
   ): Promise<DatabaseRecord<T> | null> {
     const index = this.data[table].findIndex(condition);

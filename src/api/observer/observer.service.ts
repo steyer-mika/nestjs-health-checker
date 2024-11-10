@@ -5,7 +5,10 @@ import {
   ObserverDto,
   UpdateObserverDto,
 } from '@/api/observer/observer.schema';
-import { DatabaseService } from '@/services/database/database.service';
+import {
+  DatabaseService,
+  QueryCondition,
+} from '@/services/database/database.service';
 
 /**
  * Service responsible for managing observers in the system.
@@ -55,6 +58,16 @@ export class ObserverService {
    */
   findAll(): ObserverDto[] {
     return this.db.findAll('observer');
+  }
+
+  /**
+   * Retrieves observers that match the given condition.
+   *
+   * @param condition - A function that determines whether an observer matches the given condition.
+   * @returns A promise that resolves to an array of observer data.
+   */
+  findMany(condition: QueryCondition<'observer'>) {
+    return this.db.findMany('observer', condition);
   }
 
   /**

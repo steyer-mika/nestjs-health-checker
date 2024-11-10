@@ -1,7 +1,10 @@
+import { HttpModule } from '@nestjs/axios';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_PIPE } from '@nestjs/core';
+import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ZodValidationPipe } from 'nestjs-zod';
 
 import { ApiModule } from '@/api/api.module';
 import { AppController } from '@/app.controller';
@@ -10,7 +13,6 @@ import environment from '@/config/environment';
 import { LoggerMiddleware } from '@/middleware/logger.middleware';
 import { DatabaseService } from '@/services/database/database.service';
 import { ServicesModule } from '@/services/services.module';
-import { ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
   imports: [
@@ -29,6 +31,10 @@ import { ZodValidationPipe } from 'nestjs-zod';
         },
       ],
     }),
+
+    HttpModule.register({}),
+
+    ScheduleModule.forRoot(),
 
     ServicesModule,
     ApiModule,
