@@ -1,13 +1,15 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import compression from 'compression';
 import helmet from 'helmet';
+import { join } from 'path';
 
 import { AppModule } from '@/app.module';
 import { LoggerConfig } from '@/config/logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     logger: LoggerConfig.new(),
   });
 
@@ -23,9 +25,6 @@ async function bootstrap() {
     }),
   );
 
-  // https://docs.nestjs.com/faq/global-prefix //
-  app.setGlobalPrefix('api');
-
   // https://docs.nestjs.com/security/cors //
   app.enableCors({
     origin: config.getOrThrow<string>('frontend.url'),
@@ -33,6 +32,11 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
+
+  // https://docs.nestjs.com/techniques/mvc //
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
 
   await app.listen(config.getOrThrow<number>('app.port'));
 }
