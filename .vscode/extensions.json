@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "mikestead.dotenv",
+      "aaron-bond.better-comments",
+      "streetsidesoftware.code-spell-checker",
+      "exodiusstudios.comment-anchors",
+      "christian-kohler.path-intellisense",
+      "esbenp.prettier-vscode",
+    ]
+  }
