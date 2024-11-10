@@ -1,10 +1,10 @@
 {
   "name": "nestjs-health-checker",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "A little NestJS app that observes other NestJS apps via health checks.",
+  "author": "Mika Steyer",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "prettier": "prettier --write \"src/**/*.ts\"",
