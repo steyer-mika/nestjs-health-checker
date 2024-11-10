@@ -38,11 +38,8 @@ export class ObserverService {
    * @returns A promise that resolves to the observer data.
    * @throws {NotFoundException} If no observer is found with the given UUID.
    */
-  async findOne(uuid: string): Promise<ObserverDto> {
-    const observer = await this.db.findOne(
-      'observer',
-      (item) => item.uuid === uuid,
-    );
+  findOne(uuid: string): ObserverDto {
+    const observer = this.db.findOne('observer', (item) => item.uuid === uuid);
 
     if (!observer) {
       throw new NotFoundException(`Observer with uuid ${uuid} not found.`);
@@ -56,7 +53,7 @@ export class ObserverService {
    *
    * @returns A promise that resolves to an array of observer data.
    */
-  async findAll(): Promise<ObserverDto[]> {
+  findAll(): ObserverDto[] {
     return this.db.findAll('observer');
   }
 

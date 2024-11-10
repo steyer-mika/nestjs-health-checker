@@ -6,8 +6,8 @@ import { ObserverService } from '@/api/observer/observer.service';
 export class AppService {
   constructor(private readonly observerService: ObserverService) {}
 
-  async index() {
-    const observers = await this.observerService.findAll();
+  index() {
+    const observers = this.observerService.findAll();
 
     return { observers };
   }

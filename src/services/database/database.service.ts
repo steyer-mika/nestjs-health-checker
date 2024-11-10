@@ -49,31 +49,29 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
     return validatedRecord as Readonly<DatabaseRecord<T>>;
   }
 
-  public async findAll<T extends DatabaseTable>(
-    table: T,
-  ): Promise<DatabaseRecord<T>[]> {
+  public findAll<T extends DatabaseTable>(table: T): DatabaseRecord<T>[] {
     return this.data[table];
   }
 
-  public async findOne<T extends DatabaseTable>(
+  public findOne<T extends DatabaseTable>(
     table: T,
     condition: (
       item: DatabaseRecord<T>,
       index: number,
       obj: DatabaseRecord<T>[],
     ) => boolean,
-  ): Promise<DatabaseRecord<T> | null> {
+  ): DatabaseRecord<T> | null {
     return this.data[table].find(condition) ?? null;
   }
 
-  public async findMany<T extends DatabaseTable>(
+  public findMany<T extends DatabaseTable>(
     table: T,
     condition: (
       item: DatabaseRecord<T>,
       index: number,
       obj: DatabaseRecord<T>[],
     ) => boolean,
-  ): Promise<DatabaseRecord<T>[]> {
+  ): DatabaseRecord<T>[] {
     return this.data[table].filter(condition);
   }
 

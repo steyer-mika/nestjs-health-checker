@@ -40,10 +40,10 @@ export class ObserverController {
   /**
    * Endpoint to retrieve all observers in the system.
    *
-   * @returns A promise that resolves to an array of observer data.
+   * @returns An array of observer data.
    */
   @Get()
-  async findAll(): Promise<ObserverDto[]> {
+  findAll(): ObserverDto[] {
     return this.observerService.findAll();
   }
 
@@ -51,13 +51,11 @@ export class ObserverController {
    * Endpoint to retrieve an observer by its unique identifier.
    *
    * @param uuid - The unique identifier of the observer to be retrieved.
-   * @returns A promise that resolves to the observer data.
+   * @returns The observer data.
    * @throws {NotFoundException} If no observer is found with the given UUID.
    */
   @Get(':uuid')
-  async findOne(
-    @Param('uuid', ParseUUIDPipe) uuid: string,
-  ): Promise<ObserverDto> {
+  findOne(@Param('uuid', ParseUUIDPipe) uuid: string): ObserverDto {
     return this.observerService.findOne(uuid);
   }
 
