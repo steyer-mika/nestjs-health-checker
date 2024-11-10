@@ -9,5 +9,6 @@ import { ObserverService } from './observer.service';
   imports: [DatabaseModule],
   providers: [ObserverService],
   controllers: [ObserverController],
+  exports: [ObserverService],
 })
 export class ObserverModule {}

@@ -38,6 +38,16 @@ export class ObserverController {
   }
 
   /**
+   * Endpoint to retrieve all observers in the system.
+   *
+   * @returns A promise that resolves to an array of observer data.
+   */
+  @Get()
+  async findAll(): Promise<ObserverDto[]> {
+    return this.observerService.findAll();
+  }
+
+  /**
    * Endpoint to retrieve an observer by its unique identifier.
    *
    * @param uuid - The unique identifier of the observer to be retrieved.

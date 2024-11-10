@@ -52,6 +52,15 @@ export class ObserverService {
   }
 
   /**
+   * Retrieves all observers in the system.
+   *
+   * @returns A promise that resolves to an array of observer data.
+   */
+  async findAll(): Promise<ObserverDto[]> {
+    return this.db.findAll('observer');
+  }
+
+  /**
    * Updates an existing observer's data.
    *
    * @param uuid - The unique identifier of the observer to be updated.
